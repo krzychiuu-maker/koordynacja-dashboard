@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koordynacja — Bieżące Tematy ☁️ Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f1f3d;--navy2:#1a3160;--blue:#2563eb;--blue-l:#dbeafe;--green:#10b981;--green-l:#d1fae5;--amber:#f59e0b;--amber-l:#fef3c7;--red:#ef4444;--red-l:#fee2e2;--purple:#8b5cf6;--purple-l:#ede9fe;--teal:#0891b2;--teal-l:#cffafe;--bg:#f0f4fa;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b;--light:#f8fafc;--sh:0 2px 16px rgba(15,31,61,.09);--sh2:0 12px 48px rgba(15,31,61,.18)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 55%,#1e4080 100%);position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:-80px;right:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(37,99,235,.2) 0%,transparent 70%);border-radius:50%}
+.hdr-inner{max-width:1400px;margin:0 auto;padding:28px 40px 24px;position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.4);color:var(--amber);font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:8px}
+h1{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;line-height:1.2}
+h1 em{font-style:normal;color:var(--amber)}
+.hdr-meta{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+.meta-p{color:rgba(255,255,255,.55);font-size:12px}
+.clock-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:8px 18px;border-radius:10px;font-size:11px;text-align:center}
+.clock-box strong{display:block;font-family:'Syne',sans-serif;font-size:16px}
+
+/* TABS */
+.tabs-wrap{background:var(--navy);position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08)}
+.tabs-nav{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs-nav::-webkit-scrollbar{display:none}
+.tab-btn{display:flex;align-items:center;gap:6px;padding:12px 16px;border:none;background:transparent;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:rgba(255,255,255,.75)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--amber)}
+.tbadge{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px}
+.tab-btn.active .tbadge{background:var(--amber);color:var(--navy)}
+
+/* MAIN */
+main{max-width:1400px;margin:0 auto;padding:24px 40px 60px}
+.tab-panel{display:none;animation:fi .25s ease}
+.tab-panel.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* REGION HEADER */
+.reg-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.reg-title{display:flex;align-items:center;gap:12px}
+.reg-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.reg-title h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--navy)}
+.mgr-wrap{display:flex;align-items:center;gap:7px;margin-top:3px}
+.mgr-name{font-size:12.5px;color:var(--muted)}
+.mgr-edit-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:1px 7px;font-size:10.5px;color:var(--muted);cursor:pointer;transition:all .15s}
+.mgr-edit-btn:hover{border-color:var(--blue);color:var(--blue)}
+.mgr-input{border:1.5px solid var(--blue);border-radius:6px;padding:2px 8px;font-size:12.5px;font-family:'DM Sans',sans-serif;outline:none;width:200px}
+
+/* BUTTONS */
+.act-bar{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.act-btn{display:flex;align-items:center;gap:4px;background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:6px 13px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s}
+.act-btn:hover{border-color:var(--blue);color:var(--blue);background:#f0f7ff}
+.add-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
+.add-btn:hover{background:var(--blue);transform:translateY(-1px)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.stat-c{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh);transition:transform .2s}
+.stat-c:hover{transform:translateY(-2px)}
+.stat-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.s-blue{background:var(--blue-l)}.s-green{background:var(--green-l)}.s-amber{background:var(--amber-l)}.s-red{background:var(--red-l)}.s-teal{background:var(--teal-l)}
+.stat-v{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--navy);line-height:1}
+.stat-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+
+/* TABLE CARD */
+.tbl-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
+.tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;transition:background .15s}
+.tbl-hdr:hover{background:var(--light)}
+.tbl-hdr-left{display:flex;align-items:center;gap:9px;font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;color:var(--navy)}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.chip{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.c-blue{background:var(--blue-l);color:#1d4ed8}.c-green{background:var(--green-l);color:#065f46}.c-amber{background:var(--amber-l);color:#92400e}.c-red{background:var(--red-l);color:#991b1b}.c-purple{background:var(--purple-l);color:#5b21b6}.c-teal{background:var(--teal-l);color:#0e7490}
+.tog{color:var(--muted);font-size:16px;transition:transform .25s}
+.tbl-card.collapsed .tog{transform:rotate(-90deg)}
+.tbl-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);max-height:8000px}
+.tbl-card.collapsed .tbl-body{max-height:0}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--light);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.nc{width:40px;text-align:center!important}
+.lc{text-align:right!important;width:150px}
+.rc{text-align:right!important}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--light)}
+td{padding:10px 14px;font-size:12.5px;color:var(--text);vertical-align:middle}
+td.nc{color:var(--muted);font-size:11px;font-weight:600;text-align:center}
+.empty-r{color:#cbd5e1;font-style:italic;font-size:12px}
+.lim{display:inline-block;padding:2px 9px;border-radius:7px;font-size:11.5px;font-weight:600;font-family:'Syne',sans-serif}
+.lh{background:#d1fae5;color:#065f46}.lm{background:#dbeafe;color:#1d4ed8}.ll{background:#f1f5f9;color:#475569}.lz{background:#fee2e2;color:#991b1b}
+.ubj-name{font-weight:600;color:var(--navy)}
+.ubj-note{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* SECTION LABEL */
+.sec-lbl{margin:18px 0 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+
+/* ── FLOATING DETAIL PANEL ── */
+.detail-panel{position:fixed;top:70px;right:0;width:420px;height:calc(100vh - 70px);background:var(--card);border-left:1px solid var(--border);box-shadow:-8px 0 40px rgba(15,31,61,.12);z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.detail-panel.open{transform:translateX(0)}
+.dp-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0}
+.dp-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--navy)}
+.dp-cat{font-size:11px;color:var(--muted);margin-top:3px}
+.dp-close{background:var(--light);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--muted);flex-shrink:0;transition:all .15s}
+.dp-close:hover{background:var(--red-l);border-color:var(--red);color:var(--red)}
+.dp-body{flex:1;overflow-y:auto;padding:16px 20px}
+.dp-entry{background:var(--light);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;position:relative}
+.dp-entry-text{font-size:13px;line-height:1.55;color:var(--text)}
+.dp-entry-actions{display:flex;gap:6px;margin-top:10px;justify-content:flex-end}
+.dp-act{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .15s}
+.dp-act:hover{border-color:var(--blue);color:var(--blue)}
+.dp-act.del:hover{border-color:var(--red);color:var(--red)}
+.dp-edit-area{width:100%;border:1.5px solid var(--blue);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:vertical;min-height:70px;display:none}
+.dp-footer{padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0}
+.dp-add-row{display:flex;gap:8px}
+.dp-add-input{flex:1;border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s}
+.dp-add-input:focus{border-color:var(--blue)}
+.dp-add-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap}
+.dp-add-btn:hover{background:var(--blue)}
+.dp-todo-row{display:flex;align-items:flex-start;gap:9px;padding:10px 14px;background:var(--light);border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.chk{width:17px;height:17px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:2px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent}
+.chk.done{background:var(--green);border-color:var(--green);color:#fff}
+.dp-todo-txt{font-size:13px;line-height:1.5;flex:1}
+.dp-todo-txt.done{text-decoration:line-through;color:var(--muted)}
+
+/* MOVE SLAUGHTERHOUSE */
+.ubj-move-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;color:var(--muted);cursor:pointer;transition:all .15s;margin-left:6px;white-space:nowrap}
+.ubj-move-btn:hover{border-color:var(--purple);color:var(--purple)}
+.move-modal-bg{display:none;position:fixed;inset:0;background:rgba(15,31,61,.4);backdrop-filter:blur(3px);z-index:600;align-items:center;justify-content:center}
+.move-modal-bg.open{display:flex}
+.move-modal{background:var(--card);border-radius:16px;padding:26px;width:90%;max-width:420px;box-shadow:var(--sh2);animation:mi .2s ease}
+@keyframes mi{from{transform:scale(.95);opacity:0}to{transform:none;opacity:1}}
+.move-modal h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.move-modal p{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+.reg-options{display:grid;gap:8px}
+.reg-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:500}
+.reg-opt:hover{border-color:var(--blue);background:var(--blue-l);color:var(--blue)}
+.reg-opt.current{opacity:.4;pointer-events:none}
+.move-cancel{margin-top:12px;width:100%;background:#f1f5f9;border:none;border-radius:9px;padding:9px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;color:var(--muted)}
+
+/* BUDGET */
+.bud-simple{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.bud-kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;box-shadow:var(--sh)}
+.bud-kpi-lbl{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
+.bud-kpi-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--navy);line-height:1}
+.bud-kpi-sub{font-size:11.5px;color:var(--muted);margin-top:4px}
+.pb-wrap{margin-top:12px}
+.pb-lbl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-bottom:4px}
+.pb{height:8px;background:#e2e8f0;border-radius:8px;overflow:hidden}
+.pb-fill{height:100%;border-radius:8px;transition:width .7s ease}
+.bud-tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.bud-tbl-hdr{padding:14px 18px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;color:var(--navy)}
+.bud-scroll{overflow-x:auto}
+.bud-tbl{width:100%;border-collapse:collapse;min-width:600px}
+.bud-tbl th{background:var(--light);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:9px 14px;text-align:right;border-bottom:1px solid var(--border)}
+.bud-tbl th:first-child{text-align:left}
+.bud-tbl td{padding:10px 14px;font-size:12.5px;border-bottom:1px solid var(--border);text-align:right}
+.bud-tbl td:first-child{text-align:left;font-weight:500;color:var(--text)}
+.bud-tbl tr:last-child td{border-bottom:none}
+.bud-tbl tfoot td{background:var(--navy);color:#fff;font-weight:700;font-family:'Syne',sans-serif}
+.pp{display:inline-block;padding:2px 8px;border-radius:7px;font-size:11px;font-weight:700}
+.pp-hi{background:#d1fae5;color:#065f46}.pp-mi{background:#fef3c7;color:#92400e}.pp-lo{background:#fee2e2;color:#991b1b}.pp-no{background:#f1f5f9;color:#94a3b8}
+.m-act{color:var(--text)}.m-fut{opacity:.45}
+.m-tag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:9.5px;font-weight:600;margin-left:5px;background:var(--amber-l);color:#92400e}
+
+/* OVERVIEW */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.ov-card-hdr{padding:13px 16px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border)}
+.ov-card-hdr h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--navy)}
+.ov-card-hdr p{font-size:10.5px;color:var(--muted);margin-top:1px}
+.ov-body{padding:12px 16px}
+.ov-item{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:12px}
+.ov-item:last-child{border-bottom:none}
+.ov-cat{flex-shrink:0;width:75px;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding-top:2px}
+.ov-val{color:var(--text);line-height:1.45}
+.ov-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.ov-footer span{font-size:11px;color:var(--muted)}.ov-footer strong{font-family:'Syne',sans-serif;font-size:13px;color:var(--navy)}
+
+/* ADD MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,31,61,.4);backdrop-filter:blur(3px);z-index:500;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--card);border-radius:18px;padding:28px;width:90%;max-width:480px;box-shadow:var(--sh2);animation:mi .2s ease}
+.modal h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;color:var(--navy)}
+.fr{margin-bottom:13px}
+.fr label{display:block;font-size:10.5px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.fr input,.fr textarea,.fr select{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;resize:vertical}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--blue)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.btn-cancel{background:#f1f5f9;border:none;border-radius:9px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.btn-save{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-save:hover{background:var(--blue)}
+
+footer{text-align:center;padding:18px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:14px}
+
+/* PRICE PANEL */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 24px;box-shadow:var(--sh)}
+.price-card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.price-big{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--navy);line-height:1}
+.price-unit{font-size:13px;color:var(--muted);margin-top:4px}
+.price-input-row{display:flex;gap:8px;margin-top:14px;align-items:center}
+.price-input{width:110px;border:2px solid var(--border);border-radius:9px;padding:8px 12px;font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--navy);outline:none;transition:border-color .2s;text-align:center}
+.price-input:focus{border-color:var(--blue)}
+.price-save-btn{background:var(--navy);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap}
+.price-save-btn:hover{background:var(--blue)}
+.weekday-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.wd-card{background:var(--light);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.wd-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.wd-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--navy)}
+.wd-input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:6px 8px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--navy);outline:none;text-align:center;margin-top:6px}
+.wd-input:focus{border-color:var(--blue)}
+/* ARCHIVE */
+.arch-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.arch-select{border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--card);outline:none;cursor:pointer}
+.arch-select:focus{border-color:var(--blue)}
+.year-slider{-webkit-appearance:none;width:200px;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
+.year-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--navy);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.arch-chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--sh);overflow-x:auto}
+.arch-chart-inner{min-width:600px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;height:28px}
+.bar-label{width:70px;font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;font-weight:500}
+.bar-track{flex:1;height:14px;background:#f1f5f9;border-radius:7px;position:relative;overflow:visible}
+.bar-fill{height:100%;border-radius:7px;transition:width .5s ease;position:relative;display:flex;align-items:center}
+.bar-tip{position:absolute;right:-50px;font-size:11px;font-weight:700;white-space:nowrap;color:var(--navy)}
+.arch-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.arch-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.arch-leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.arch-edit-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
+.arch-edit-btn:hover{border-color:var(--blue);color:var(--blue)}
+.arch-edit-row{display:flex;gap:6px;align-items:center;margin-top:4px;display:none}
+.arch-edit-inp{width:70px;border:1.5px solid var(--blue);border-radius:6px;padding:3px 7px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;text-align:center}
+
+@media(max-width:700px){main{padding:14px 14px 40px}.hdr-inner{padding:20px 16px}.tabs-nav{padding:0 14px}.detail-panel{width:100%;height:60vh;top:auto;bottom:0;transform:translateY(100%);border-left:none;border-top:1px solid var(--border)}.detail-panel.open{transform:translateY(0)}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="hdr-inner">
+    <div>
+      <div class="hdr-tag">🌾 Zarządzanie Sprzedażą</div>
+      <div id="cloud-status" style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.4);color:#6ee7b7;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:8px;margin-left:8px;transition:all .3s">⏳ Łączenie z chmurą...</div>
+      <h1>Koordynacja <em>Bieżące Tematy</em></h1>
+      <div class="hdr-meta">
+        <span class="meta-p">📍 5 Regionów</span>
+        <span class="meta-p">🏭 52 Ubojnie</span>
+        <span class="meta-p">💰 Budżet: 113 mln szt./rok</span>
+      </div>
+    </div>
+    <div class="clock-box"><strong id="clk-d">—</strong><span id="clk-t" style="font-size:11px;opacity:.7">—</span></div>
+  </div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('all',this)">🗺️ Przegląd</button>
+    <button class="tab-btn" onclick="switchTab('budget',this)">📊 Budżet 2026</button>
+    <button class="tab-btn" onclick="switchTab('south',this)">☀️ Południe <span class="tbadge" id="b-south">0</span></button>
+    <button class="tab-btn" onclick="switchTab('north',this)">🧭 Północ <span class="tbadge" id="b-north">0</span></button>
+    <button class="tab-btn" onclick="switchTab('east',this)">🌅 Wschód <span class="tbadge" id="b-east">0</span></button>
+    <button class="tab-btn" onclick="switchTab('west',this)">🌊 Zachód <span class="tbadge" id="b-west">0</span></button>
+    <button class="tab-btn" onclick="switchTab('central',this)">🌿 Centralny <span class="tbadge" id="b-central">0</span></button>
+    <button class="tab-btn" onclick="switchTab('prices',this)">💰 Ceny Bieżące</button>
+    <button class="tab-btn" onclick="switchTab('archive',this)">📈 Archiwum Cen</button>
+  </div>
+</div>
+
+<main>
+  <div class="tab-panel active" id="panel-all">
+    <div class="act-bar">
+      <button class="act-btn" onclick="expandAll()">⊞ Rozwiń</button>
+      <button class="act-btn" onclick="collapseAll()">⊟ Zwiń</button>
+      <button class="act-btn" onclick="window.print()">🖨️ Drukuj</button>
+    </div>
+    <div class="ov-grid" id="ov-grid"></div>
+  </div>
+  <div class="tab-panel" id="panel-budget"></div>
+  <div class="tab-panel" id="panel-south"></div>
+  <div class="tab-panel" id="panel-north"></div>
+  <div class="tab-panel" id="panel-east"></div>
+  <div class="tab-panel" id="panel-west"></div>
+  <div class="tab-panel" id="panel-central"></div>
+  <div class="tab-panel" id="panel-prices"></div>
+  <div class="tab-panel" id="panel-archive"></div>
+</main>
+
+<!-- FLOATING DETAIL PANEL -->
+<div class="detail-panel" id="detail-panel">
+  <div class="dp-header">
+    <div>
+      <div class="dp-title" id="dp-title">—</div>
+      <div class="dp-cat" id="dp-cat">—</div>
+    </div>
+    <button class="dp-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+  <div class="dp-footer">
+    <div class="dp-add-row">
+      <input class="dp-add-input" id="dp-add-input" placeholder="Dodaj nowy punkt..." onkeydown="if(event.key==='Enter')dpAddEntry()">
+      <button class="dp-add-btn" onclick="dpAddEntry()">+ Dodaj</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOVE SLAUGHTERHOUSE MODAL -->
+<div class="move-modal-bg" id="move-modal">
+  <div class="move-modal">
+    <h3>🔀 Przenieś ubojnię</h3>
+    <p id="move-modal-ubj">Wybierz docelowy region:</p>
+    <div class="reg-options" id="move-options"></div>
+    <button class="move-cancel" onclick="closeMoveModal()">Anuluj</button>
+  </div>
+</div>
+
+<!-- ADD ENTRY MODAL -->
+<div class="overlay" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">➕ Dodaj wpis</h3>
+    <div class="fr"><label>Kategoria</label>
+      <select id="m-cat">
+        <option value="sprawy">Sprawy Bieżące</option>
+        <option value="rynek">Co na Rynku</option>
+        <option value="nd">ND i Ptasia</option>
+        <option value="umowy">Umowy / Aneksy</option>
+        <option value="todo">Lista TO DO</option>
+      </select>
+    </div>
+    <div class="fr"><label>Treść</label><textarea id="m-txt" rows="3" placeholder="Wpisz treść..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Anuluj</button>
+      <button class="btn-save" onclick="saveEntry()">Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<footer>Koordynacja — Bieżące Tematy &nbsp;|&nbsp; © 2026</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const MONTHS=['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+const BUDGET=[9416663,9416667,9416667,9416667,9416667,9416667,9416667,9416667,9416667,9416667,9416667,9416667];
+const RAZEM_Z=[9505050,8600050,8269611,0,0,0,0,0,0,0,0,0];
+const RAZEM_P=[8939465,8172914,3907855,0,0,0,0,0,0,0,0,0];
+const KONTRAKT_P=[7293807,6745645,3317331,0,0,0,0,0,0,0,0,0];
+const PRZEW_P=[1645658,1427269,590524,0,0,0,0,0,0,0,0,0];
+const DATA_M=3;
+
+const REGIONS={
+  south:{label:'Region Południe',icon:'☀️',color:'#f59e0b',iconBg:'linear-gradient(135deg,#78350f,#f59e0b)',manager:'Maciej Grzybek',
+    slaughterhouses:[
+      {name:'AGRI-DROB',limit:100000000,payment:'35 dni',valid:'do 15.04.2025',security:'ubezpieczenie 60 mln',notes:'decyzja KK NL na 2 lata (do 15.04.2027)'},
+      {name:'KPS',limit:6500000,payment:'45 dni',valid:'do 30.04.2026',security:'ubezpieczenie 6,5 mln',notes:''},
+      {name:'Imex',limit:6000000,payment:'35 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 6 mln',notes:''},
+      {name:'Hybro',limit:5000000,payment:'35 dni',valid:'do 16.02.2026',security:'weksel, ubezp. 6 mln',notes:'5 mln do 16.02.2026'},
+      {name:'Olikorn',limit:4000000,payment:'30 dni',valid:'do 30.04.2026',security:'ubezp. 2,8 mln',notes:''},
+      {name:'Drob-Bogs',limit:3500000,payment:'35 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 3,5 mln',notes:''},
+      {name:'Drobkal',limit:2000000,payment:'28 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 2 mln',notes:'Atradius 2 mln wg 12/2023'},
+      {name:'Koko',limit:2000000,payment:'35 dni',valid:'bezterminowo',security:'weksel, ubezp. 2 mln',notes:'konieczne aktualne dane fin.'},
+      {name:'Twist',limit:2000000,payment:'28 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 3 mln',notes:'wniosek na KK 3,5 mln'},
+      {name:'Euroqr',limit:800000,payment:'60→30 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 800 tys',notes:''},
+      {name:'Smak-Drób',limit:600000,payment:'45 dni',valid:'do 30.04.2026',security:'ubezp. 600 tys.',notes:''},
+      {name:'BANDURA',limit:500000,payment:'14 dni',valid:'do 30.04.2026',security:'ubezp. 500 tys',notes:''},
+      {name:'Ko-Bo',limit:500000,payment:'40 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 500 tys',notes:''},
+      {name:'Brado-2',limit:400000,payment:'21 dni',valid:'do 30.04.2026',security:'ubezp. 400 tys',notes:''},
+      {name:'Drób-Pol',limit:150000,payment:'21 dni',valid:'do 30.04.2026',security:'ubezp. 150 tys',notes:''},
+      {name:'DEJA W',limit:0,payment:'30 dni',valid:'bezterminowo',security:'weksel, ubezp. 1,5 mln',notes:'🚫 Karta zablokowana — KRD De Heus'},
+      {name:'System-Drob',limit:0,payment:'21 dni',valid:'bezterminowo',security:'—',notes:''},
+      {name:'Ubojnia Prusiński',limit:0,payment:'31 dni',valid:'bezterminowo',security:'brak',notes:'zwrócony weksel'},
+      {name:'LIGOWSKA B',limit:0,payment:'30 dni',valid:'bezterminowo',security:'brak',notes:'ubezpieczyciel przyznał 0'},
+    ],
+    topics:{sprawy:['Brak nowy podział komercyjny — Krzysztof rozmawia z logistykami, odsprzedażami i ND i Ptasia'],rynek:['Ubojnia woli nie kupić niż przepłacić'],nd:['Lwówek / Wielkopolska'],umowy:[],todo:['Maciej Grzybek — powinien mieć osoby które urealniają wizje Plukonu jako całości']}
+  },
+  north:{label:'Region Północ',icon:'🧭',color:'#2563eb',iconBg:'linear-gradient(135deg,#1e3a5f,#2563eb)',manager:'Wojtek Kokot',
+    slaughterhouses:[
+      {name:'ANIMEX FOODS',limit:40000000,payment:'21 dni',valid:'do 31.03.2027',security:'ubezp. 40 mln',notes:'limit łączony na brojlera i trzodę'},
+      {name:'Drosed',limit:15000000,payment:'28 dni',valid:'do 15.04.2027',security:'ubezp. 15 mln',notes:'zgoda KK NL do 15.04.2027'},
+      {name:'Górni',limit:10000000,payment:'30 dni',valid:'do 30.04.2026',security:'ubezp. 8 mln',notes:'wniosek 10 mln → 8 mln → KK NL 10 mln'},
+      {name:'Superdrob',limit:6000000,payment:'30 dni',valid:'do 30.04.2026',security:'ubezp. 6 mln',notes:''},
+      {name:'Merchel Uniszki',limit:4000000,payment:'60 dni',valid:'bezterminowo',security:'weksel, ubezp. 2,5 mln',notes:'4 mln przyznane na KK NL'},
+      {name:'Lech Drób',limit:1500000,payment:'30 dni',valid:'do 30.04.2026',security:'ubezp. 1,5 mln',notes:''},
+      {name:'Gomak',limit:0,payment:'35 dni',valid:'do 23.10.2024',security:'brak',notes:'🚫 KRD, cofnięcie limitu od 6.03'},
+      {name:'Wipasz',limit:0,payment:'21 dni',valid:'bezterminowo',security:'—',notes:''},
+      {name:'Ubojnia Polana',limit:0,payment:'—',valid:'bezterminowo',security:'brak',notes:'wniosek odrzucony'},
+      {name:'EKO-GRILL',limit:0,payment:'—',valid:'bezterminowo',security:'brak',notes:'ubezpieczyciel 0 — straty'},
+    ],
+    topics:{sprawy:[],rynek:[],nd:[],umowy:[],todo:[]}
+  },
+  east:{label:'Region Wschód',icon:'🌅',color:'#10b981',iconBg:'linear-gradient(135deg,#064e3b,#10b981)',manager:'Przemek Gręźlikowski',
+    slaughterhouses:[
+      {name:'Konkol',limit:25000000,payment:'50 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 20→15 mln',notes:'ubezp. 15 + 10 mln na KK'},
+      {name:'Mielewczyk',limit:10000000,payment:'35 dni',valid:'do 30.04.2026',security:'ubezp. 10 mln',notes:'KK Holandii 10 mln do 26.07.2026'},
+      {name:'Dróbaleks',limit:8000000,payment:'21 dni',valid:'do 30.04.2026',security:'ubezp. 8 mln',notes:'zgoda KK NL do 1.12.2026'},
+      {name:'Piórkowscy',limit:7000000,payment:'35 dni',valid:'bezterminowo',security:'ubezp. 5,5 mln',notes:'wniosek KK wstrzymany — brak danych fin.'},
+      {name:'Er-Drob',limit:6000000,payment:'40 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 6 mln',notes:'KK NL do 18.04.2027'},
+      {name:'ELITE POULTRY',limit:6000000,payment:'35 dni',valid:'do 30.04.2026',security:'ubezp. 6 mln',notes:'wspólnie z Elite Food = 12 mln'},
+      {name:'ELITE FOOD',limit:6000000,payment:'35 dni',valid:'do 30.04.2026',security:'ubezp. 6 mln',notes:'wspólnie z Elite Poultry = 12 mln'},
+      {name:'Farmex',limit:4500000,payment:'35 dni',valid:'bezterminowo',security:'weksel na paszę',notes:'2 mln żywiec + 2,5 mln pasza'},
+      {name:'Gosz',limit:2000000,payment:'—',valid:'do 30.04.2026',security:'ubezp. 2 mln',notes:''},
+      {name:'Masdrob',limit:1500000,payment:'30 dni',valid:'do 30.04.2026',security:'ubezp. 1,5 mln',notes:''},
+    ],
+    topics:{sprawy:[],rynek:[],nd:[],umowy:[],todo:[]}
+  },
+  west:{label:'Region Zachód',icon:'🌊',color:'#8b5cf6',iconBg:'linear-gradient(135deg,#4c1d95,#8b5cf6)',manager:'Michał Małyszczyk',
+    slaughterhouses:[
+      {name:'Storteboom',limit:40000000,payment:'30 dni',valid:'do 4.04.2027',security:'weksel, ubezp. 30 mln',notes:'do 08/2025 → 40 mln, potem 30 mln'},
+      {name:'Drobimex',limit:6000000,payment:'21 dni',valid:'bezterminowo',security:'ubezp. 6 mln',notes:''},
+      {name:'Koziegłowy',limit:2250000,payment:'21 dni',valid:'bezterminowo',security:'ubezp. 2,5 mln',notes:'decyzją Michała: 2,25 mln'},
+      {name:'UBOJNIA BRYCHCY',limit:1000000,payment:'35 dni',valid:'do 30.04.2026',security:'ubezp. 1 mln',notes:''},
+      {name:'IKO',limit:1000000,payment:'60 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 1 mln',notes:'wymagane zaudytowane dane fin.'},
+    ],
+    topics:{sprawy:[],rynek:[],nd:[],umowy:[],todo:[]}
+  },
+  central:{label:'Region Centralny',icon:'🌿',color:'#0891b2',iconBg:'linear-gradient(135deg,#164e63,#0891b2)',manager:'Olga Wodzyńska',
+    slaughterhouses:[
+      {name:'RSP Nowość',limit:25000000,payment:'35 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 25 mln',notes:'łączony z paszowym; od 07/2025 → 20 mln'},
+      {name:'Drobex',limit:10000000,payment:'—',valid:'do 30.04.2026',security:'ubezp. 10 mln',notes:'KK przyznane 10 mln'},
+      {name:'Smolarek',limit:4500000,payment:'30 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 900 tys',notes:''},
+      {name:'Farmio',limit:4500000,payment:'21 dni',valid:'bezterminowo',security:'weksel, ubezp. 4,5 mln',notes:'odmówiło danych fin.'},
+      {name:'ADROS',limit:2500000,payment:'45 dni',valid:'bezterminowo',security:'weksel 2012, ubezp. 2,5 mln',notes:''},
+      {name:'Elczar',limit:2500000,payment:'28 dni',valid:'do 30.04.2026',security:'weksel, ubezp. 3 mln',notes:''},
+      {name:'Dromico',limit:1000000,payment:'21 dni',valid:'do 30.04.2026',security:'ubezp. 1 mln',notes:''},
+      {name:'Kul-Drób',limit:700000,payment:'21 dni',valid:'do 30.04.2026',security:'ubezp. 700 tys',notes:'z 1 mln → 700 tys'},
+    ],
+    topics:{sprawy:['Farmio ofertuje wspólnie z Tasomixem (2–3 grosze do kontraktu)'],rynek:['Ceny lekko do góry — północ 5,50–5,60, południe ok. 5,20'],nd:['Ostatnia Ptasia: 02.03.2026'],umowy:['Brak'],todo:['Przygotować ceny brojler dla sprzedaży']}
+  }
+};
+
+const CATS=[
+  {key:'sprawy',label:'Sprawy Bieżące',dot:'#2563eb',chip:'c-blue'},
+  {key:'rynek', label:'Co na Rynku',   dot:'#10b981',chip:'c-green'},
+  {key:'nd',    label:'ND i Ptasia',   dot:'#f59e0b',chip:'c-amber'},
+  {key:'umowy', label:'Umowy/Aneksy',  dot:'#8b5cf6',chip:'c-purple'},
+  {key:'todo',  label:'Lista TO DO',   dot:'#ef4444', chip:'c-red'},
+];
+
+// ─── DETAIL PANEL STATE ───────────────────────────────────────────────────────
+let dpRegion=null, dpCatKey=null;
+
+function openDetail(regKey, catKey){
+  dpRegion=regKey; dpCatKey=catKey;
+  const cat=CATS.find(c=>c.key===catKey);
+  const R=REGIONS[regKey];
+  document.getElementById('dp-title').textContent=cat.label;
+  document.getElementById('dp-cat').innerHTML=`<span style="color:${cat.dot}">●</span> ${R.label} &nbsp;·&nbsp; ${R.icon} ${R.manager}`;
+  renderDpBody();
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('dp-add-input').focus();
+}
+
+function renderDpBody(){
+  const entries=REGIONS[dpRegion].topics[dpCatKey]||[];
+  const body=document.getElementById('dp-body');
+  if(!entries.length||entries.every(e=>!e||e==='Brak')){
+    body.innerHTML='<p style="color:var(--muted);font-size:13px;padding:10px 0">Brak wpisów. Dodaj pierwszy punkt poniżej.</p>';
+    return;
+  }
+  if(dpCatKey==='todo'){
+    body.innerHTML=entries.map((txt,i)=>{
+      if(!txt)return'';
+      return`<div class="dp-todo-row" id="dp-e-${i}">
+        <div class="chk" onclick="this.classList.toggle('done');this.textContent=this.classList.contains('done')?'✓':'';this.nextElementSibling.classList.toggle('done')"></div>
+        <span class="dp-todo-txt">${txt}</span>
+        <button class="dp-act del" onclick="dpDelete(${i})" style="margin-left:auto;flex-shrink:0">🗑</button>
+      </div>`;
+    }).join('');
+  } else {
+    body.innerHTML=entries.map((txt,i)=>{
+      if(!txt||txt==='Brak')return'';
+      return`<div class="dp-entry" id="dp-e-${i}">
+        <div class="dp-entry-text" id="dp-et-${i}">${txt}</div>
+        <textarea class="dp-edit-area" id="dp-ea-${i}" rows="3">${txt}</textarea>
+        <div class="dp-entry-actions">
+          <button class="dp-act" id="dp-edit-btn-${i}" onclick="dpStartEdit(${i})">✏️ Edytuj</button>
+          <button class="dp-act" id="dp-save-btn-${i}" onclick="dpSaveEdit(${i})" style="display:none;color:var(--blue)">💾 Zapisz</button>
+          <button class="dp-act del" onclick="dpDelete(${i})">🗑 Usuń</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function dpStartEdit(i){
+  document.getElementById(`dp-et-${i}`).style.display='none';
+  document.getElementById(`dp-ea-${i}`).style.display='block';
+  document.getElementById(`dp-ea-${i}`).focus();
+  document.getElementById(`dp-edit-btn-${i}`).style.display='none';
+  document.getElementById(`dp-save-btn-${i}`).style.display='';
+}
+function dpSaveEdit(i){
+  const val=document.getElementById(`dp-ea-${i}`).value.trim();
+  if(val) REGIONS[dpRegion].topics[dpCatKey][i]=val;
+  renderDpBody();
+  refreshRegionTopics(dpRegion);
+}
+function dpDelete(i){
+  REGIONS[dpRegion].topics[dpCatKey].splice(i,1);
+  renderDpBody();
+  refreshRegionTopics(dpRegion);
+  updateBadges();
+}
+function dpAddEntry(){
+  const inp=document.getElementById('dp-add-input');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  REGIONS[dpRegion].topics[dpCatKey].push(txt);
+  inp.value='';
+  renderDpBody();
+  refreshRegionTopics(dpRegion);
+  updateBadges();
+  renderOverview();
+}
+function closeDetail(){document.getElementById('detail-panel').classList.remove('open');dpRegion=null;dpCatKey=null;}
+
+// Refresh only the topics part of a region panel without full re-render
+function refreshRegionTopics(key){
+  const panel=document.getElementById('panel-'+key);
+  const R=REGIONS[key];
+  CATS.forEach((cat,ci)=>{
+    const card=document.getElementById(`${key}-c${ci}`);
+    if(!card)return;
+    const valid=R.topics[cat.key].filter(x=>x&&x!=='Brak');
+    // update chip count
+    const chip=card.querySelector('.chip');
+    if(chip)chip.textContent=valid.length;
+    // update badge
+    const b=document.getElementById('b-'+key);
+    if(b)b.textContent=topicCount(key);
+  });
+}
+
+// ─── MOVE SLAUGHTERHOUSE ─────────────────────────────────────────────────────
+let moveRegion=null, moveIdx=null;
+function openMoveModal(regKey, idx){
+  moveRegion=regKey; moveIdx=idx;
+  const ubj=REGIONS[regKey].slaughterhouses[idx];
+  document.getElementById('move-modal-ubj').textContent=`Przenieś: ${ubj.name}`;
+  const opts=document.getElementById('move-options');
+  opts.innerHTML=Object.entries(REGIONS).map(([k,R])=>`
+    <div class="reg-opt ${k===regKey?'current':''}" onclick="confirmMove('${k}')">
+      <span>${R.icon}</span><span>${R.label}</span>
+      <span style="margin-left:auto;font-size:11px;color:var(--muted)">${R.manager}</span>
+    </div>`).join('');
+  document.getElementById('move-modal').classList.add('open');
+}
+function confirmMove(targetKey){
+  if(targetKey===moveRegion){closeMoveModal();return;}
+  const ubj=REGIONS[moveRegion].slaughterhouses.splice(moveIdx,1)[0];
+  REGIONS[targetKey].slaughterhouses.unshift(ubj);
+  closeMoveModal();
+  renderRegion(moveRegion);
+  renderRegion(targetKey);
+  renderOverview();
+}
+function closeMoveModal(){document.getElementById('move-modal').classList.remove('open');moveRegion=null;moveIdx=null;}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function fmtN(v){return v.toLocaleString('pl-PL');}
+function fmtLim(v){
+  if(v===0)return'<span class="lim lz">Brak</span>';
+  if(v>=10000000)return`<span class="lim lh">${(v/1000000).toFixed(1)} mln</span>`;
+  if(v>=1000000) return`<span class="lim lm">${(v/1000000).toFixed(2).replace('.00','')} mln</span>`;
+  return`<span class="lim ll">${(v/1000).toFixed(0)} tys.</span>`;
+}
+function fmtM(v){return v>=1000000?(v/1000000).toFixed(1)+' mln zł':(v/1000).toFixed(0)+' tys. zł';}
+function sumLim(s){return s.reduce((a,x)=>a+x.limit,0);}
+function topicCount(k){return Object.values(REGIONS[k].topics).flat().filter(x=>x&&x!=='Brak').length;}
+function pp(p){if(!p)return'<span class="pp pp-no">—</span>';const v=Math.round(p*100);return`<span class="pp ${v>=90?'pp-hi':v>=70?'pp-mi':'pp-lo'}">${v}%</span>`;}
+
+// ─── CLOCK ────────────────────────────────────────────────────────────────────
+function tick(){const n=new Date();document.getElementById('clk-d').textContent=n.toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'long'});document.getElementById('clk-t').textContent=n.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});}
+tick();setInterval(tick,1000);
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── BUDGET ───────────────────────────────────────────────────────────────────
+function renderBudget(){
+  const budSoFar=BUDGET.slice(0,DATA_M).reduce((a,b)=>a+b,0);
+  const totZ=RAZEM_Z.reduce((a,b)=>a+b,0), totP=RAZEM_P.reduce((a,b)=>a+b,0);
+  const pZ=totZ/budSoFar, pP=totP/budSoFar;
+  const totalBud=BUDGET.reduce((a,b)=>a+b,0);
+
+  document.getElementById('panel-budget').innerHTML=`
+    <div class="sec-lbl" style="margin-top:0">📊 Realizacja Budżetu 2026</div>
+    <div class="bud-simple">
+      <div class="bud-kpi">
+        <div class="bud-kpi-lbl">💰 Budżet roczny</div>
+        <div class="bud-kpi-val">${fmtN(totalBud)}</div>
+        <div class="bud-kpi-sub">szt. &nbsp;·&nbsp; ${(totalBud/1000000).toFixed(0)} mln &nbsp;·&nbsp; ${fmtN(BUDGET[0])} szt./mies.</div>
+      </div>
+      <div class="bud-kpi">
+        <div class="bud-kpi-lbl">📦 Zakontraktowano YTD (I–III)</div>
+        <div class="bud-kpi-val">${fmtN(totZ)}</div>
+        <div class="bud-kpi-sub">szt. vs budżet ${fmtN(budSoFar)} szt.</div>
+        <div class="pb-wrap"><div class="pb-lbl"><span>Realizacja</span><span>${Math.round(pZ*100)}%</span></div>
+        <div class="pb"><div class="pb-fill" style="width:${Math.min(pZ*100,100)}%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div></div>
+      </div>
+      <div class="bud-kpi">
+        <div class="bud-kpi-lbl">✅ Przyjechało YTD (I–III)</div>
+        <div class="bud-kpi-val">${fmtN(totP)}</div>
+        <div class="bud-kpi-sub">szt. &nbsp;·&nbsp; kontrakt: ${fmtN(KONTRAKT_P.reduce((a,b)=>a+b,0))} &nbsp;|&nbsp; przewł.: ${fmtN(PRZEW_P.reduce((a,b)=>a+b,0))}</div>
+        <div class="pb-wrap"><div class="pb-lbl"><span>Realizacja</span><span>${Math.round(pP*100)}%</span></div>
+        <div class="pb"><div class="pb-fill" style="width:${Math.min(pP*100,100)}%;background:linear-gradient(90deg,#10b981,#6ee7b7)"></div></div></div>
+      </div>
+    </div>
+    <div class="bud-tbl-wrap">
+      <div class="bud-tbl-hdr">Szczegóły miesięczne</div>
+      <div class="bud-scroll"><table class="bud-tbl">
+        <thead><tr><th>Miesiąc</th><th>Budżet (szt.)</th><th>Przyjechało</th><th>% budżetu</th><th>Kontrakt</th><th>Przewłaszcz.</th></tr></thead>
+        <tbody>${MONTHS.map((m,i)=>{
+          const ok=i<DATA_M;
+          return`<tr class="${ok?'m-act':'m-fut'}">
+            <td>${m}${ok?`<span class="m-tag">✓</span>`:''}</td>
+            <td class="rc">${fmtN(BUDGET[i])}</td>
+            <td class="rc">${ok?fmtN(RAZEM_P[i]):'—'}</td>
+            <td class="rc">${ok?pp(RAZEM_P[i]/BUDGET[i]):'—'}</td>
+            <td class="rc">${ok?fmtN(KONTRAKT_P[i]):'—'}</td>
+            <td class="rc">${ok?fmtN(PRZEW_P[i]):'—'}</td>
+          </tr>`;
+        }).join('')}</tbody>
+        <tfoot><tr>
+          <td>RAZEM</td>
+          <td class="rc">${fmtN(totalBud)}</td>
+          <td class="rc">${fmtN(totP)}</td>
+          <td class="rc">${pp(pP)}</td>
+          <td class="rc">${fmtN(KONTRAKT_P.reduce((a,b)=>a+b,0))}</td>
+          <td class="rc">${fmtN(PRZEW_P.reduce((a,b)=>a+b,0))}</td>
+        </tr></tfoot>
+      </table></div>
+    </div>`;
+}
+
+// ─── RENDER REGION ────────────────────────────────────────────────────────────
+function renderRegion(key){
+  const R=REGIONS[key];
+  const el=document.getElementById('panel-'+key);
+  const active=R.slaughterhouses.filter(s=>s.limit>0).length;
+  const total=sumLim(R.slaughterhouses);
+
+  const stats=`
+    <div class="stat-c"><div class="stat-ic s-blue">🏭</div><div><div class="stat-v">${R.slaughterhouses.length}</div><div class="stat-l">Ubojni</div></div></div>
+    <div class="stat-c"><div class="stat-ic s-green">✅</div><div><div class="stat-v">${active}</div><div class="stat-l">Aktywny limit</div></div></div>
+    <div class="stat-c"><div class="stat-ic s-amber">💰</div><div><div class="stat-v">${fmtM(total).split(' ')[0]}</div><div class="stat-l">Suma limitów</div></div></div>
+    <div class="stat-c"><div class="stat-ic s-red">📋</div><div><div class="stat-v">${topicCount(key)}</div><div class="stat-l">Tematy</div></div></div>`;
+
+  const ubjRows=R.slaughterhouses.map((s,i)=>`
+    <tr>
+      <td class="nc">${i+1}</td>
+      <td>
+        <div class="ubj-name">${s.name}
+          <button class="ubj-move-btn" onclick="openMoveModal('${key}',${i})">🔀 Przenieś</button>
+        </div>
+        ${s.notes?`<div class="ubj-note">${s.notes}</div>`:''}
+      </td>
+      <td class="lc">${fmtLim(s.limit)}</td>
+      <td>${s.payment||'—'}</td>
+      <td>${s.valid||'—'}</td>
+      <td style="font-size:11px;color:var(--muted)">${s.security||'—'}</td>
+    </tr>`).join('');
+
+  const topicsHtml=CATS.map((cat,ci)=>{
+    const entries=R.topics[cat.key]||[];
+    const valid=entries.filter(x=>x&&x!=='Brak');
+    const preview=valid.length
+      ?`<span style="font-size:11px;color:var(--muted);font-weight:400;margin-left:8px;font-family:'DM Sans';max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle">${valid[0].substring(0,55)}${valid[0].length>55?'…':''}</span>`
+      :`<span style="font-size:11px;color:#cbd5e1;font-weight:400;margin-left:8px;font-family:'DM Sans'">brak wpisów</span>`;
+
+    // inline expanded content
+    let innerHtml='';
+    if(cat.key==='todo'){
+      innerHtml=`<div style="padding:12px 18px 14px">${
+        valid.length
+          ? entries.map((txt,i)=>{if(!txt)return'';return`<div class="dp-todo-row" style="margin-bottom:8px"><div class="chk" onclick="this.classList.toggle('done');this.textContent=this.classList.contains('done')?'✓':'';this.nextElementSibling.classList.toggle('done')"></div><span class="dp-todo-txt">${txt}</span><button class="dp-act del" onclick="inlineDelete('${key}','${cat.key}',${i})" style="margin-left:auto;flex-shrink:0">🗑</button></div>`;}).join('')
+          : '<p style="color:var(--muted);font-size:12.5px">Brak zadań</p>'
+      }
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <input class="dp-add-input" id="inp-${key}-${ci}" placeholder="Dodaj zadanie..." onkeydown="if(event.key==='Enter')inlineAdd('${key}','${cat.key}','${ci}')">
+        <button class="dp-add-btn" onclick="inlineAdd('${key}','${cat.key}','${ci}')">+ Dodaj</button>
+      </div></div>`;
+    } else {
+      innerHtml=`<div style="padding:12px 18px 14px">${
+        valid.length
+          ? entries.map((txt,i)=>{if(!txt||txt==='Brak')return'';return`
+            <div class="dp-entry" id="ie-${key}-${ci}-${i}" style="margin-bottom:10px">
+              <div class="dp-entry-text" id="iet-${key}-${ci}-${i}">${txt}</div>
+              <textarea class="dp-edit-area" id="iea-${key}-${ci}-${i}" rows="2">${txt}</textarea>
+              <div class="dp-entry-actions">
+                <button class="dp-act" id="ieb-${key}-${ci}-${i}" onclick="inlineEdit('${key}','${cat.key}','${ci}',${i})">✏️ Edytuj</button>
+                <button class="dp-act" id="ies-${key}-${ci}-${i}" onclick="inlineSave('${key}','${cat.key}','${ci}',${i})" style="display:none;color:var(--blue)">💾 Zapisz</button>
+                <button class="dp-act del" onclick="inlineDelete('${key}','${cat.key}',${i})">🗑 Usuń</button>
+              </div>
+            </div>`;}).join('')
+          : '<p style="color:var(--muted);font-size:12.5px;margin-bottom:12px">Brak wpisów</p>'
+      }
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <input class="dp-add-input" id="inp-${key}-${ci}" placeholder="Dodaj punkt..." onkeydown="if(event.key==='Enter')inlineAdd('${key}','${cat.key}','${ci}')">
+        <button class="dp-add-btn" onclick="inlineAdd('${key}','${cat.key}','${ci}')">+ Dodaj</button>
+      </div></div>`;
+    }
+
+    return`<div class="tbl-card collapsed" id="${key}-c${ci}">
+      <div class="tbl-hdr" onclick="toggleCard('${key}-c${ci}')">
+        <div class="tbl-hdr-left">
+          <div class="dot" style="background:${cat.dot}"></div>
+          ${cat.label}
+          <span class="chip ${cat.chip}" style="margin-left:6px">${valid.length}</span>
+          ${preview}
+        </div>
+        <div class="tog">▾</div>
+      </div>
+      <div class="tbl-body">${innerHtml}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="reg-hdr">
+      <div class="reg-title">
+        <div class="reg-icon" style="background:${R.iconBg}">${R.icon}</div>
+        <div>
+          <h2>${R.label}</h2>
+          <div class="mgr-wrap">
+            <span class="mgr-name" id="mgr-${key}">👤 ${R.manager}</span>
+            <button class="mgr-edit-btn" onclick="editMgr('${key}')">✏️ Zmień</button>
+          </div>
+        </div>
+      </div>
+      <button class="add-btn" onclick="openModal('${key}')">+ Dodaj temat</button>
+    </div>
+    <div class="stats-row">${stats}</div>
+    <div class="sec-lbl" style="margin-top:4px">📋 Bieżące Tematy</div>
+    ${topicsHtml}
+    <div class="tbl-card collapsed" id="${key}-ubj" style="margin-top:6px">
+      <div class="tbl-hdr" onclick="toggleCard('${key}-ubj')">
+        <div class="tbl-hdr-left"><div class="dot" style="background:${R.color}"></div>🏭 Ubojnie &amp; Limity<span class="chip c-teal" style="margin-left:6px">${R.slaughterhouses.length}</span></div>
+        <div class="tog">▾</div>
+      </div>
+      <div class="tbl-body"><table>
+        <thead><tr><th class="nc">#</th><th>Ubojnia</th><th class="lc">Limit</th><th>Termin płatn.</th><th>Ważność</th><th>Zabezpieczenie</th></tr></thead>
+        <tbody>${ubjRows}</tbody>
+      </table></div>
+    </div>`;
+}
+
+// ─── OVERVIEW ─────────────────────────────────────────────────────────────────
+function renderOverview(){
+  document.getElementById('ov-grid').innerHTML=Object.entries(REGIONS).map(([key,R])=>{
+    const items=Object.entries(R.topics).map(([k,arr])=>
+      arr.filter(x=>x&&x!=='Brak').map(txt=>{
+        const cat=CATS.find(c=>c.key===k);
+        return`<div class="ov-item"><div class="ov-cat" style="color:${cat.dot}">${cat.label.split(' ')[0]}</div><div class="ov-val">${txt}</div></div>`;
+      }).join('')).join('');
+    return`<div class="ov-card">
+      <div class="ov-card-hdr">
+        <div class="reg-icon" style="background:${R.iconBg};width:34px;height:34px;border-radius:9px;font-size:15px">${R.icon}</div>
+        <div><h3>${R.label}</h3><p>👤 <span id="ov-mgr-${key}">${R.manager}</span> · 🏭 ${R.slaughterhouses.length}</p></div>
+      </div>
+      <div class="ov-body">
+        ${items||'<p style="color:var(--muted);font-size:12px;padding:4px 0">Brak bieżących tematów</p>'}
+        <div class="ov-footer"><span>Suma limitów</span><strong>${fmtM(sumLim(R.slaughterhouses))}</strong></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── COLLAPSE / EXPAND ────────────────────────────────────────────────────────
+function toggleCard(id){document.getElementById(id)?.classList.toggle('collapsed');}
+function expandAll(){document.querySelectorAll('.tbl-card').forEach(c=>c.classList.remove('collapsed'));}
+function collapseAll(){document.querySelectorAll('.tbl-card').forEach(c=>c.classList.add('collapsed'));}
+
+// ─── EDIT MANAGER ─────────────────────────────────────────────────────────────
+function editMgr(key){
+  const span=document.getElementById('mgr-'+key);
+  const cur=REGIONS[key].manager;
+  const inp=document.createElement('input');
+  inp.className='mgr-input';inp.value=cur;span.replaceWith(inp);inp.focus();inp.select();
+  const save=()=>{
+    const val=inp.value.trim()||cur;
+    REGIONS[key].manager=val;
+    const ns=document.createElement('span');ns.className='mgr-name';ns.id='mgr-'+key;ns.textContent='👤 '+val;
+    inp.replaceWith(ns);
+    const ov=document.getElementById('ov-mgr-'+key);if(ov)ov.textContent=val;
+  };
+  inp.addEventListener('blur',save);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')save();if(e.key==='Escape'){inp.value=cur;save();}});
+}
+
+// ─── INLINE TOPIC FUNCTIONS ───────────────────────────────────────────────────
+function inlineAdd(regKey,catKey,ci){const inp=document.getElementById(`inp-${regKey}-${ci}`);const txt=inp.value.trim();if(!txt)return;REGIONS[regKey].topics[catKey].push(txt);inp.value="";renderRegion(regKey);updateBadges();renderOverview();const card=document.getElementById(`${regKey}-c${ci}`);if(card)card.classList.remove("collapsed");}
+function inlineDelete(regKey,catKey,idx){REGIONS[regKey].topics[catKey].splice(idx,1);const ci=CATS.findIndex(c=>c.key===catKey);renderRegion(regKey);updateBadges();renderOverview();const card=document.getElementById(`${regKey}-c${ci}`);if(card)card.classList.remove("collapsed");}
+function inlineEdit(regKey,catKey,ci,i){document.getElementById(`iet-${regKey}-${ci}-${i}`).style.display="none";const ea=document.getElementById(`iea-${regKey}-${ci}-${i}`);ea.style.display="block";ea.focus();document.getElementById(`ieb-${regKey}-${ci}-${i}`).style.display="none";document.getElementById(`ies-${regKey}-${ci}-${i}`).style.display="";}
+function inlineSave(regKey,catKey,ci,i){const val=document.getElementById(`iea-${regKey}-${ci}-${i}`).value.trim();if(val)REGIONS[regKey].topics[catKey][i]=val;renderRegion(regKey);renderOverview();const card=document.getElementById(`${regKey}-c${ci}`);if(card)card.classList.remove("collapsed");}
+
+// ─── ADD MODAL ────────────────────────────────────────────────────────────────
+let modalReg='south';
+function openModal(reg){modalReg=reg;document.getElementById('modal-title').textContent=`➕ Dodaj temat — ${REGIONS[reg].label}`;document.getElementById('modal').classList.add('open');}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('m-txt').value='';}
+function saveEntry(){
+  const cat=document.getElementById('m-cat').value;
+  const txt=document.getElementById('m-txt').value.trim();
+  if(!txt)return;
+  REGIONS[modalReg].topics[cat].push(txt);
+  renderRegion(modalReg);renderOverview();updateBadges();closeModal();
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('move-modal').addEventListener('click',function(e){if(e.target===this)closeMoveModal();});
+
+function updateBadges(){Object.keys(REGIONS).forEach(k=>{const el=document.getElementById('b-'+k);if(el)el.textContent=topicCount(k);});}
+
+
+// ── PRICE DATA ────────────────────────────────────────────────────────────
+const PRICES = {
+  minrol: { value: 4.91, label: 'Cena Ministerialna', color: '1F3864' },
+  rolnicza: { value: 5.06, label: 'Cena Rolnicza', color: '10b981' },
+  weekdays: {
+    poniedzialek: { label: 'Poniedziałek', value: 5.10 },
+    sroda:        { label: 'Środa',        value: 5.15 },
+    piatek:       { label: 'Piątek',       value: 5.20 },
+  }
+};
+
+// ── ARCHIVE DATA (monthly averages from Excel) ────────────────────────────
+const ARCH_DATA = {
+  "2021-12":{"cr":4.63,"minrol":4.30},
+  "2022-01":{"cr":4.80,"minrol":4.41},"2022-02":{"cr":5.06,"minrol":4.54},
+  "2022-03":{"cr":6.10,"minrol":4.88},"2022-04":{"cr":6.66,"minrol":5.82},
+  "2022-05":{"cr":6.26,"minrol":6.16},"2022-06":{"cr":6.06,"minrol":6.14},
+  "2022-07":{"cr":5.92,"minrol":6.08},"2022-08":{"cr":6.12,"minrol":6.07},
+  "2022-09":{"cr":6.14,"minrol":6.10},"2022-10":{"cr":5.24,"minrol":6.10},
+  "2022-11":{"cr":5.44,"minrol":6.03},"2022-12":{"cr":5.03,"minrol":5.85},
+  "2023-01":{"cr":5.46,"minrol":5.66},"2023-02":{"cr":6.18,"minrol":5.71},
+  "2023-03":{"cr":6.26,"minrol":5.85},"2023-04":{"cr":5.45,"minrol":5.82},
+  "2023-05":{"cr":5.48,"minrol":5.70},"2023-06":{"cr":5.33,"minrol":5.63},
+  "2023-07":{"cr":5.30,"minrol":5.50},"2023-08":{"cr":5.20,"minrol":5.37},
+  "2023-09":{"cr":5.12,"minrol":5.27},"2023-10":{"cr":4.74,"minrol":5.08},
+  "2023-11":{"cr":4.65,"minrol":4.92},"2023-12":{"cr":4.19,"minrol":4.74},
+  "2024-01":{"cr":4.69,"minrol":4.65},"2024-02":{"cr":5.21,"minrol":4.66},
+  "2024-03":{"cr":5.38,"minrol":4.80},"2024-04":{"cr":5.09,"minrol":4.84},
+  "2024-05":{"cr":5.26,"minrol":4.84},"2024-06":{"cr":5.39,"minrol":4.98},
+  "2024-07":{"cr":5.77,"minrol":5.11},"2024-08":{"cr":5.30,"minrol":5.20},
+  "2024-09":{"cr":5.49,"minrol":5.22},"2024-10":{"cr":5.45,"minrol":5.23},
+  "2024-11":{"cr":5.15,"minrol":5.22},"2024-12":{"cr":4.87,"minrol":5.16},
+  "2025-01":{"cr":5.12,"minrol":5.15},"2025-02":{"cr":5.85,"minrol":5.28},
+  "2025-03":{"cr":6.14,"minrol":5.54},"2025-04":{"cr":6.34,"minrol":5.74},
+  "2025-05":{"cr":6.37,"minrol":5.93},"2025-06":{"cr":6.54,"minrol":6.13},
+  "2025-07":{"cr":6.05,"minrol":6.06},"2025-08":{"cr":6.21,"minrol":6.00},
+  "2025-09":{"cr":6.26,"minrol":6.03},"2025-10":{"cr":6.02,"minrol":6.01},
+  "2025-11":{"cr":4.41,"minrol":5.72},"2025-12":{"cr":4.11,"minrol":5.18},
+  "2026-01":{"cr":4.55,"minrol":4.94},"2026-02":{"cr":5.06,"minrol":4.91},
+  "2026-03":{"cr":5.35,"minrol":5.04}
+};
+
+const MONTHS_PL=['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'];
+
+// ── RENDER PRICES TAB ─────────────────────────────────────────────────────
+function renderPrices(){
+  const el=document.getElementById('panel-prices');
+  el.innerHTML=`
+    <div class="sec-lbl" style="margin-top:0">💰 Aktualne Ceny Skupu Brojlera</div>
+    <div class="price-grid">
+
+      <!-- MINROL -->
+      <div class="price-card">
+        <div class="price-card-title"><span style="background:#dbeafe;color:#1d4ed8;padding:3px 10px;border-radius:8px;font-size:12px">🏛️ Ministerialna</span></div>
+        <div class="price-big" id="pr-minrol-disp">${PRICES.minrol.value.toFixed(2)}</div>
+        <div class="price-unit">zł / kg</div>
+        <div class="price-input-row">
+          <input class="price-input" id="pr-minrol-inp" type="number" step="0.01" min="0" max="20" value="${PRICES.minrol.value.toFixed(2)}">
+          <button class="price-save-btn" onclick="savePrice('minrol')">💾 Zapisz</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Ostatnia aktualizacja: <span id="pr-minrol-date">—</span></div>
+      </div>
+
+      <!-- ROLNICZA -->
+      <div class="price-card">
+        <div class="price-card-title"><span style="background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:8px;font-size:12px">🌾 Rolnicza</span></div>
+        <div class="price-big" id="pr-rolnicza-disp">${PRICES.rolnicza.value.toFixed(2)}</div>
+        <div class="price-unit">zł / kg</div>
+        <div class="price-input-row">
+          <input class="price-input" id="pr-rolnicza-inp" type="number" step="0.01" min="0" max="20" value="${PRICES.rolnicza.value.toFixed(2)}">
+          <button class="price-save-btn" onclick="savePrice('rolnicza')">💾 Zapisz</button>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Ostatnia aktualizacja: <span id="pr-rolnicza-date">—</span></div>
+      </div>
+
+      <!-- WEEKDAYS -->
+      <div class="price-card" style="grid-column:span 1">
+        <div class="price-card-title"><span style="background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:8px;font-size:12px">📅 Ceny tygodniowe</span></div>
+        <div class="weekday-grid">
+          ${Object.entries(PRICES.weekdays).map(([key,wd])=>`
+          <div class="wd-card">
+            <div class="wd-label">${wd.label}</div>
+            <div class="wd-val" id="wd-disp-${key}">${wd.value.toFixed(2)}</div>
+            <input class="wd-input" id="wd-inp-${key}" type="number" step="0.01" min="0" max="20" value="${wd.value.toFixed(2)}" onchange="saveWeekday('${key}')">
+          </div>`).join('')}
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:10px">Zmiany zapisują się automatycznie po wpisaniu</div>
+      </div>
+
+    </div>
+
+    <!-- Quick compare -->
+    <div class="tbl-card">
+      <div class="tbl-hdr" onclick="toggleCard('pr-compare')">
+        <div class="tbl-hdr-left"><div class="dot" style="background:#f59e0b"></div>Porównanie cen tygodniowych vs Ministerialna</div>
+        <div class="tog">▾</div>
+      </div>
+      <div class="tbl-body" id="pr-compare">
+        <div style="padding:16px 20px">
+          ${Object.entries(PRICES.weekdays).map(([key,wd])=>{
+            const diff=(wd.value-PRICES.minrol.value).toFixed(2);
+            const pos=parseFloat(diff)>=0;
+            const pct=((wd.value/PRICES.minrol.value-1)*100).toFixed(1);
+            return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+              <div style="width:120px;font-size:13px;font-weight:600;color:var(--navy)">${wd.label}</div>
+              <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--navy)">${wd.value.toFixed(2)} zł</div>
+              <div style="margin-left:8px;background:${pos?'#d1fae5':'#fee2e2'};color:${pos?'#065f46':'#991b1b'};padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700">${pos?'+':''}${diff} zł (${pos?'+':''}${pct}%)</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function savePrice(key){
+  const inp=document.getElementById('pr-'+key+'-inp');
+  const val=parseFloat(inp.value);
+  if(isNaN(val)||val<=0)return;
+  PRICES[key].value=val;
+  document.getElementById('pr-'+key+'-disp').textContent=val.toFixed(2);
+  const now=new Date().toLocaleDateString('pl-PL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('pr-'+key+'-date').textContent=now;
+  scheduleSave();
+  // flash
+  const d=document.getElementById('pr-'+key+'-disp');
+  d.style.color='var(--green)';
+  setTimeout(()=>d.style.color='var(--navy)',1200);
+  renderPrices();
+}
+
+function saveWeekday(key){
+  const inp=document.getElementById('wd-inp-'+key);
+  const val=parseFloat(inp.value);
+  if(isNaN(val)||val<=0)return;
+  PRICES.weekdays[key].value=val;
+  document.getElementById('wd-disp-'+key).textContent=val.toFixed(2);
+  scheduleSave();
+}
+
+// ── RENDER ARCHIVE TAB ────────────────────────────────────────────────────
+let archYear = 2025;
+let archView = 'year'; // 'year' | 'all'
+let archEditing = null;
+
+function renderArchive(){
+  const el=document.getElementById('panel-archive');
+  const years=[...new Set(Object.keys(ARCH_DATA).map(k=>k.split('-')[0]))].sort();
+
+  el.innerHTML=`
+    <div class="sec-lbl" style="margin-top:0">📈 Archiwum Cen — Cena Rolnicza i Ministerialna (zł/kg)</div>
+    <div class="arch-controls">
+      <select class="arch-select" onchange="archView=this.value;renderArchive()">
+        <option value="year" ${archView==='year'?'selected':''}>Jeden rok</option>
+        <option value="all"  ${archView==='all' ?'selected':''}>Wszystkie lata</option>
+      </select>
+      ${archView==='year'?`
+      <input type="range" class="year-slider" min="${years[0]}" max="${years[years.length-1]}"
+        value="${archYear}" oninput="archYear=parseInt(this.value);document.getElementById('arch-yr-lbl').textContent=this.value;renderArchive()">
+      <span id="arch-yr-lbl" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--navy);min-width:55px">${archYear}</span>
+      `:''}
+      <div class="arch-legend" style="margin-bottom:0;margin-left:auto">
+        <div class="arch-leg-item"><div class="arch-leg-dot" style="background:#10b981;border-radius:50%"></div>Cena Rolnicza</div>
+        <div class="arch-leg-item"><div class="arch-leg-dot" style="background:#1F3864;border-radius:50%"></div>Ministerialna</div>
+      </div>
+    </div>
+
+    <div class="arch-chart-wrap" style="padding:16px 20px 20px">
+      <canvas id="arch-canvas" style="width:100%;max-height:420px"></canvas>
+    </div>
+
+    <div class="tbl-card" style="margin-top:16px">
+      <div class="tbl-hdr" onclick="toggleCard('arch-tbl-body')">
+        <div class="tbl-hdr-left"><div class="dot" style="background:#10b981"></div>Dane tabelaryczne + edycja</div>
+        <div class="tog">▾</div>
+      </div>
+      <div class="tbl-body collapsed" id="arch-tbl-body">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr>
+            <th style="background:var(--light);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)">Miesiąc</th>
+            <th style="background:var(--light);color:#10b981;font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 14px;text-align:right;border-bottom:1px solid var(--border)">Cena Rolnicza</th>
+            <th style="background:var(--light);color:#1F3864;font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 14px;text-align:right;border-bottom:1px solid var(--border)">Ministerialna</th>
+            <th style="background:var(--light);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 14px;text-align:center;border-bottom:1px solid var(--border)">Edycja</th>
+          </tr></thead>
+          <tbody>
+          ${(()=>{
+            let entries=Object.entries(ARCH_DATA).filter(([k,v])=>v.cr>0||v.minrol>0);
+            if(archView==='year') entries=entries.filter(([k])=>k.startsWith(archYear));
+            return entries.map(([key,d])=>{
+              const [yr,mo]=key.split('-');
+              const lbl=MONTHS_PL[parseInt(mo)-1]+(archView==='all'?' '+yr:'');
+              return `<tr style="border-bottom:1px solid var(--border)">
+                <td style="padding:9px 14px;font-size:13px;font-weight:600;color:var(--navy)">${lbl}</td>
+                <td style="padding:9px 14px;font-size:13px;text-align:right;color:#065f46">${d.cr?d.cr.toFixed(2)+' zł':'—'}</td>
+                <td style="padding:9px 14px;font-size:13px;text-align:right;color:#1d4ed8">${d.minrol?d.minrol.toFixed(2)+' zł':'—'}</td>
+                <td style="padding:9px 14px;text-align:center">
+                  <button class="arch-edit-btn" onclick="toggleArchEdit('${key}')">✏️</button>
+                  <div class="arch-edit-row" id="arch-edit-${key}" style="justify-content:center">
+                    <input class="arch-edit-inp" id="ae-cr-${key}" value="${d.cr||''}" type="number" step="0.01" placeholder="CR">
+                    <input class="arch-edit-inp" id="ae-mr-${key}" value="${d.minrol||''}" type="number" step="0.01" placeholder="Min">
+                    <button class="price-save-btn" onclick="saveArchEntry('${key}')">💾</button>
+                  </div>
+                </td>
+              </tr>`;
+            }).join('');
+          })()}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--sh)">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">➕ Dodaj nowy miesiąc</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <select class="arch-select" id="arch-add-yr">${years.map(y=>`<option value="${y}" ${y==new Date().getFullYear()?'selected':''}>${y}</option>`).join('')}<option value="${new Date().getFullYear()+1}">${new Date().getFullYear()+1}</option></select>
+        <select class="arch-select" id="arch-add-mo">${MONTHS_PL.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${i+1==new Date().getMonth()+1?'selected':''}>${m}</option>`).join('')}</select>
+        <input class="arch-edit-inp" id="arch-add-cr" placeholder="CR (zł)" type="number" step="0.01" style="display:inline-block;width:90px">
+        <input class="arch-edit-inp" id="arch-add-mr" placeholder="Minrol (zł)" type="number" step="0.01" style="display:inline-block;width:100px">
+        <button class="price-save-btn" onclick="addArchEntry()">+ Dodaj</button>
+      </div>
+    </div>`;
+
+  // Draw Chart.js line chart
+  const entries=Object.entries(ARCH_DATA)
+    .filter(([k,v])=>(v.cr>0||v.minrol>0) && (archView==='all'||k.startsWith(archYear)))
+    .sort(([a],[b])=>a.localeCompare(b));
+
+  const labels=entries.map(([key])=>{
+    const [yr,mo]=key.split('-');
+    return MONTHS_PL[parseInt(mo)-1]+(archView==='all'?` '${yr.slice(2)}`:'');
+  });
+  const crData  =entries.map(([,d])=>d.cr||null);
+  const mrData  =entries.map(([,d])=>d.minrol||null);
+
+  // Min/max for y-axis
+  const allVals=[...crData,...mrData].filter(v=>v!=null);
+  const minY=Math.max(0,Math.floor(Math.min(...allVals)*10-2)/10);
+  const maxY=Math.ceil(Math.max(...allVals)*10+2)/10;
+
+  setTimeout(()=>{
+    const canvas=document.getElementById('arch-canvas');
+    if(!canvas) return;
+    if(canvas._chart) canvas._chart.destroy();
+
+    canvas._chart = new Chart(canvas,{
+      type:'line',
+      data:{
+        labels,
+        datasets:[
+          {
+            label:'Cena Rolnicza (zł/kg)',
+            data:crData,
+            borderColor:'#10b981',
+            backgroundColor:'rgba(16,185,129,0.08)',
+            borderWidth:2.5,
+            pointRadius:4,
+            pointHoverRadius:7,
+            pointBackgroundColor:'#10b981',
+            tension:0.35,
+            fill:true,
+            spanGaps:true,
+          },
+          {
+            label:'Ministerialna (zł/kg)',
+            data:mrData,
+            borderColor:'#1F3864',
+            backgroundColor:'rgba(31,56,100,0.06)',
+            borderWidth:2.5,
+            pointRadius:4,
+            pointHoverRadius:7,
+            pointBackgroundColor:'#1F3864',
+            tension:0.35,
+            fill:true,
+            spanGaps:true,
+          }
+        ]
+      },
+      options:{
+        responsive:true,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{
+            position:'top',
+            labels:{font:{family:'DM Sans',size:12},padding:20,usePointStyle:true,pointStyleWidth:10}
+          },
+          tooltip:{
+            backgroundColor:'rgba(15,31,61,0.92)',
+            titleFont:{family:'Syne',size:13,weight:'bold'},
+            bodyFont:{family:'DM Sans',size:12},
+            padding:12,
+            cornerRadius:10,
+            callbacks:{
+              label:ctx=>`  ${ctx.dataset.label}: ${ctx.parsed.y!=null?ctx.parsed.y.toFixed(2)+' zł':'—'}`
+            }
+          }
+        },
+        scales:{
+          x:{
+            grid:{color:'rgba(0,0,0,0.04)'},
+            ticks:{font:{family:'DM Sans',size:11},maxRotation:archView==='all'?45:0,color:'#64748b'}
+          },
+          y:{
+            min:minY,
+            max:maxY,
+            grid:{color:'rgba(0,0,0,0.06)'},
+            ticks:{
+              font:{family:'Syne',size:11},
+              color:'#64748b',
+              callback:v=>v.toFixed(2)+' zł',
+              stepSize:0.20
+            }
+          }
+        }
+      }
+    });
+  },50);
+}
+
+function toggleArchEditfunction toggleArchEdit(key){
+  const el=document.getElementById('arch-edit-'+key);
+  el.style.display=el.style.display==='flex'?'none':'flex';
+}
+
+function saveArchEntry(key){
+  const cr=parseFloat(document.getElementById('ae-cr-'+key).value);
+  const mr=parseFloat(document.getElementById('ae-mr-'+key).value);
+  if(!isNaN(cr)) ARCH_DATA[key].cr=cr;
+  if(!isNaN(mr)) ARCH_DATA[key].minrol=mr;
+  scheduleSave();
+  renderArchive();
+}
+
+function addArchEntry(){
+  const yr=document.getElementById('arch-add-yr').value;
+  const mo=document.getElementById('arch-add-mo').value;
+  const cr=parseFloat(document.getElementById('arch-add-cr').value);
+  const mr=parseFloat(document.getElementById('arch-add-mr').value);
+  const key=yr+'-'+mo;
+  ARCH_DATA[key]={cr:isNaN(cr)?0:cr, minrol:isNaN(mr)?0:mr};
+  scheduleSave();
+  renderArchive();
+}
+
+// ─── CLOUD SYNC via Netlify Function ─────────────────────────────────────────
+// Netlify Function działa jako proxy — brak CORS, działa z każdej przeglądarki
+const API_URL  = '/.netlify/functions/sync';   // Netlify proxy
+const LS_KEY   = 'koordynacja_v1';             // localStorage fallback
+
+let isSyncing     = false;
+let syncTimer     = null;
+let lastSavedHash = '';
+
+function dataHash() {
+  const s = {};
+  Object.keys(REGIONS).forEach(k => {
+    s[k] = { manager: REGIONS[k].manager, topics: REGIONS[k].topics, slaughterhouses: REGIONS[k].slaughterhouses };
+  });
+  s.__prices__ = PRICES;
+  s.__arch__   = ARCH_DATA;
+  return JSON.stringify(s);
+}
+
+function applySnapshot(snap) {
+  Object.keys(snap).forEach(k => {
+    if (k === '__prices__') {
+      if (snap[k].minrol)   PRICES.minrol   = snap[k].minrol;
+      if (snap[k].rolnicza) PRICES.rolnicza = snap[k].rolnicza;
+      if (snap[k].weekdays) PRICES.weekdays = snap[k].weekdays;
+      return;
+    }
+    if (k === '__arch__') { Object.assign(ARCH_DATA, snap[k]); return; }
+    if (REGIONS[k]) {
+      if (snap[k].manager)         REGIONS[k].manager         = snap[k].manager;
+      if (snap[k].topics)          REGIONS[k].topics          = snap[k].topics;
+      if (snap[k].slaughterhouses) REGIONS[k].slaughterhouses = snap[k].slaughterhouses;
+    }
+  });
+}
+
+// ── SAVE ──────────────────────────────────────────────────────────────────────
+async function saveToCloud() {
+  if (isSyncing) return;
+  const hash = dataHash();
+  if (hash === lastSavedHash) return;
+  isSyncing = true;
+  setCloudStatus('saving', '💾 Zapisywanie...');
+  // Always save to localStorage
+  try { localStorage.setItem(LS_KEY, hash); } catch(e) {}
+  // Try cloud
+  try {
+    const res  = await fetch(API_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    hash,
+    });
+    if (res.ok) {
+      lastSavedHash = hash;
+      setCloudStatus('ok', '☁️ Zapisano • ' + new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'}));
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    lastSavedHash = hash;
+    setCloudStatus('ok', '💾 Zapisano lokalnie • ' + new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'}));
+  }
+  isSyncing = false;
+}
+
+// ── LOAD ──────────────────────────────────────────────────────────────────────
+async function loadFromCloud() {
+  setCloudStatus('loading', '⏳ Łączenie z chmurą...');
+  // 1. Try Netlify Function (cloud)
+  try {
+    const ctrl    = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 6000);
+    const res     = await fetch(API_URL + '?t=' + Date.now(), { signal: ctrl.signal });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const text = await res.text();
+      if (text && text.length > 5 && text !== '{}') {
+        const snap = JSON.parse(text);
+        applySnapshot(snap);
+        lastSavedHash = dataHash();
+        try { localStorage.setItem(LS_KEY, lastSavedHash); } catch(e) {}
+        setCloudStatus('ok', '☁️ Dane z chmury • ' + new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'}));
+        return true;
+      }
+    }
+    setCloudStatus('ok', '☁️ Połączono • brak danych w chmurze');
+    return false;
+  } catch(e) {
+    console.log('Cloud unavailable, using localStorage:', e.message);
+  }
+  // 2. Fallback: localStorage
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw && raw.length > 5) {
+      const snap = JSON.parse(raw);
+      applySnapshot(snap);
+      lastSavedHash = dataHash();
+      setCloudStatus('ok', '💾 Dane lokalne • ' + new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'}));
+      return true;
+    }
+  } catch(e) {}
+  setCloudStatus('ok', '✅ Gotowy');
+  return false;
+}
+
+function scheduleSave() {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(saveToCloud, 1500);
+}
+
+// ── AUTO-REFRESH every 30s ────────────────────────────────────────────────────
+function startAutoRefresh() {
+  setInterval(async () => {
+    if (isSyncing) return;
+    try {
+      const res  = await fetch(API_URL + '?t=' + Date.now());
+      if (!res.ok) return;
+      const text = await res.text();
+      if (!text || text.length < 5 || text === '{}') return;
+      const snap = JSON.parse(text);
+      const h    = JSON.stringify(snap);
+      if (h === lastSavedHash) return;
+      applySnapshot(snap);
+      lastSavedHash = h;
+      try { localStorage.setItem(LS_KEY, h); } catch(e) {}
+      Object.keys(REGIONS).forEach(renderRegion);
+      renderOverview(); renderPrices(); renderArchive(); updateBadges();
+      setCloudStatus('ok', '🔄 Odświeżono • ' + new Date().toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'}));
+    } catch(e) {}
+  }, 30000);
+}
+
+// ── PATCH mutating functions ───────────────────────────────────────────────────
+const _origInlineAdd    = inlineAdd;
+inlineAdd    = function(...a) { _origInlineAdd(...a);    scheduleSave(); };
+const _origInlineDelete = inlineDelete;
+inlineDelete = function(...a) { _origInlineDelete(...a); scheduleSave(); };
+const _origInlineSave   = inlineSave;
+inlineSave   = function(...a) { _origInlineSave(...a);   scheduleSave(); };
+const _origSaveEntry    = saveEntry;
+saveEntry    = function()     { _origSaveEntry();        scheduleSave(); };
+const _origConfirmMove  = confirmMove;
+confirmMove  = function(...a) { _origConfirmMove(...a);  scheduleSave(); };
+const _origEditMgr      = editMgr;
+editMgr      = function(key)  { _origEditMgr(key); setTimeout(scheduleSave, 200); };
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+(async () => {
+  const loaded = await loadFromCloud();
+  Object.keys(REGIONS).forEach(renderRegion);
+  renderOverview();
+  renderBudget();
+  renderPrices();
+  renderArchive();
+  updateBadges();
+  if (loaded) {
+    const n = document.createElement('div');
+    n.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:10px 22px;border-radius:12px;font-size:13px;font-family:DM Sans,sans-serif;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(16,185,129,.35)';
+    n.textContent = '✅ Dane wczytane';
+    document.body.appendChild(n);
+    setTimeout(() => { n.style.transition='opacity .5s'; n.style.opacity='0'; setTimeout(()=>n.remove(),500); }, 2500);
+  }
+  startAutoRefresh();
+})();
+
+
+
+</script>
+</body>
+</html>
